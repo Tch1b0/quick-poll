@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+    client:
+        build: ./client
+        container_name: client
+        ports:
+            - "5030:80"
+
+    server:
+        build: ./server
+        container_name: server
+        ports:
+            - "5031:8080"

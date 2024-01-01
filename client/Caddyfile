@@ -1,0 +1,5 @@
+:80 {
+    root * /app
+    @notThese not path /app/Dockerfile /app/Caddyfile
+    file_server
+}

@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Preahvihear&family=Rubik+Doodle+Shadow&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Preahvihear&family=Rubik+Doodle+Shadow&display=swap");
+
+:root {
+    --bg-color: #050612;
+    --prim-color: #ff00d4;
+    --sec-color: #d4dfff;
+    --ter-color: #f8edff;
+    --border-radius: 5pt;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--prim-color);
+    font-family: Oswald;
+}
+
+input {
+    font-family: Oswald;
+    font-size: 200%;
+    padding: 1pt;
+    border-radius: var(--border-radius);
+    font-weight: bolder;
+    text-align: center;
+}
+
+button {
+    font-family: Oswald;
+    font-size: 200%;
+    padding: 50pt;
+
+    background-image: linear-gradient(to bottom right, #f20089, #8900f2);
+    transition: 1s;
+    border: 0px;
+    border-radius: var(--border-radius);
+    color: var(--bg-color);
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+h1 {
+    font-family: Rubik Doodle Shadow;
+    font-size: 500%;
+    text-align: center;
+}
+
+.root {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}

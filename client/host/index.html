@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quick Poll - Host</title>
+
+        <!-- styles -->
+        <link rel="stylesheet" href="../main.css" />
+        <link rel="stylesheet" href="./host.css" />
+
+        <!-- imports -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+            integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script
+            src="https://unpkg.com/chart.js@4.4.0/dist/chart.umd.js"
+            type="module"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+
+        <!-- scripts -->
+        <script defer type="module" src="./host.js"></script>
+    </head>
+    <body>
+        <div class="root" id="root">
+            <div id="pre-start">
+                <div id="qrcode"></div>
+                <button id="btn">Start</button>
+            </div>
+        </div>
+    </body>
+</html>

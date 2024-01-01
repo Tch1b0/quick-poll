@@ -1,0 +1,43 @@
+.ping {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+}
+
+.p1,
+.p2,
+.p3 {
+    position: fixed;
+    border-radius: 100%;
+}
+
+.p1 {
+    animation: flow 1s ease-in-out 0s infinite alternate;
+    background-color: rgb(0, 140, 255);
+}
+
+.p2 {
+    animation: flow 1s ease-in-out 0.33s infinite alternate;
+    background-color: rgb(0, 69, 126);
+}
+
+.p3 {
+    animation: flow 1s ease-in-out 0.66s infinite alternate;
+    background-color: rgb(60, 167, 255);
+}
+
+@keyframes flow {
+    0% {
+        opacity: 0%;
+        width: 0px;
+        height: 0px;
+    }
+    100% {
+        opacity: 100%;
+        width: 100px;
+        height: 100px;
+    }
+}
