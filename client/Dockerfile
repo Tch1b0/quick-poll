@@ -1,7 +1,7 @@
-FROM caddy:latest
+FROM caddy:alpine
 
 WORKDIR /app
 
-COPY ./**/* ./**/*
+COPY ./**/* /app/
 
 CMD [ "caddy", "run" ]

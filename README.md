@@ -1,6 +1,6 @@
 # Quick Poll
 
-quickly do polls
+quickly take a poll
 
 ## About
 
