@@ -11,6 +11,14 @@
     display: flex;
     flex-direction: column;
     gap: 20pt;
+    width: 90%;
+}
+
+.quiz {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10pt;
 }
 
 .question-title {
@@ -41,7 +49,21 @@ input {
     margin-bottom: 10pt;
 }
 
+input[type="text"] {
+    width: 85%;
+}
+
 .answers {
     width: 100%;
     margin-left: 20pt;
+}
+
+.input-answer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-answer {
+    width: fit-content;
 }

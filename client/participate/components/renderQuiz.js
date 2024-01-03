@@ -13,7 +13,7 @@ export default function (quiz) {
             for (const answer of q.answers) {
                 const answerID = `q-${i}-${j}`;
                 answers.push(`
-                    <div class="answer">
+                    <div class="answer radio-answer">
                         <input type="radio" id="${answerID}" name="${questionID}" value="${answer}"><label for="${answerID}">${answer}</label>
                     </div>
                 `);
@@ -32,7 +32,7 @@ export default function (quiz) {
             questions.push(`
                 <div class="question">
                     <p class="question-title">${q.question}</p>
-                    <div class="answer">
+                    <div class="answer input-answer">
                         <input type="text" id="${questionID}" placeholder="Deine Antwort"/>
                     </div>    
                 </div>
@@ -43,7 +43,7 @@ export default function (quiz) {
     }
 
     return `
-        <div>
+        <div class="quiz">
             <h1>${quiz.title}</h1>
             <div class="questions">
                 ${questions.join("")}
