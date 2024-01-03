@@ -9,5 +9,5 @@ hostButton.addEventListener("click", () => {
 });
 
 joinButton.addEventListener("click", () => {
-    window.location.href = `/client/participate#id=${sessionIDInput.value}`;
+    window.location.href = `./participate#id=${sessionIDInput.value}`;
 });
