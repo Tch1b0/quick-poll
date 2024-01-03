@@ -1,6 +1,7 @@
 import URLParams from "../lib/URLParams.js";
 import { newWSConnection } from "../lib/connection.js";
 import { $ } from "../lib/dom.js";
+import { IS_DEBUG } from "../lib/environment.js";
 import renderIdle from "./components/renderIdle.js";
 import renderQuiz from "./components/renderQuiz.js";
 
@@ -80,43 +81,45 @@ function informServer() {
     ws.send(JSON.stringify(answers));
 }
 
-// sample quiz, used for debugging
-UI.renderQuiz({
-    title: "Test",
-    questions: [
-        {
-            question: "Wie heißt du?",
-            type: "input",
-            answers: null,
-        },
-        {
-            question: "Wer war Jeffrey Epstein?",
-            type: "select",
-            answers: [
-                "Jeffrey Epstein",
-                "Jeffrey Epstein 2",
-                "Jeffrey Epstein 3",
-            ],
-        },
-        {
-            question: "What is the capital of France?",
-            type: "select",
-            answers: ["Paris", "Berlin", "Madrid", "Rome"],
-        },
-        {
-            question: "Solve 3 x 5:",
-            type: "input",
-            answers: null,
-        },
-        {
-            question: "Which planet is known as the Red Planet?",
-            type: "select",
-            answers: ["Earth", "Mars", "Jupiter", "Venus"],
-        },
-        {
-            question: "What is the chemical symbol for water?",
-            type: "input",
-            answers: null,
-        },
-    ],
-});
+if (IS_DEBUG) {
+    // sample quiz, used for debugging
+    UI.renderQuiz({
+        title: "Test",
+        questions: [
+            {
+                question: "Wie heißt du?",
+                type: "input",
+                answers: null,
+            },
+            {
+                question: "Wer war Jeffrey Epstein?",
+                type: "select",
+                answers: [
+                    "Jeffrey Epstein",
+                    "Jeffrey Epstein 2",
+                    "Jeffrey Epstein 3",
+                ],
+            },
+            {
+                question: "What is the capital of France?",
+                type: "select",
+                answers: ["Paris", "Berlin", "Madrid", "Rome"],
+            },
+            {
+                question: "Solve 3 x 5:",
+                type: "input",
+                answers: null,
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                type: "select",
+                answers: ["Earth", "Mars", "Jupiter", "Venus"],
+            },
+            {
+                question: "What is the chemical symbol for water?",
+                type: "input",
+                answers: null,
+            },
+        ],
+    });
+}

@@ -81,34 +81,32 @@ ws.onclose = (_) => {
     alert("WebSocket disconnected");
 };
 
-if (IS_DEBUG) {
-    $("btn").onclick = (_) => {
-        const raw = {
-            type: "quiz",
-            data: {
-                title: "Test",
-                questions: [
-                    {
-                        question: "What is the capital of France?",
-                        type: "select",
-                        answers: ["Paris", "Berlin", "Madrid", "Rome"],
-                    },
-                    {
-                        question: "What is the capital of Germany?",
-                        type: "input",
-                        answers: [],
-                    },
-                ],
-            },
-        };
-        const data = JSON.stringify(raw);
-        chartDisplay = new ChartDisplay($("root"), raw);
-        UI.startQuiz();
-
-        if (ws.readyState === ws.OPEN) {
-            ws.send(data);
-        } else {
-            alert("No connection => No quiz start");
-        }
+$("btn").onclick = (_) => {
+    const raw = {
+        type: "quiz",
+        data: {
+            title: "Test",
+            questions: [
+                {
+                    question: "What is the capital of France?",
+                    type: "select",
+                    answers: ["Paris", "Berlin", "Madrid", "Rome"],
+                },
+                {
+                    question: "What is the capital of Germany?",
+                    type: "input",
+                    answers: [],
+                },
+            ],
+        },
     };
-}
+    const data = JSON.stringify(raw);
+    chartDisplay = new ChartDisplay($("root"), raw);
+    UI.startQuiz();
+
+    if (ws.readyState === ws.OPEN) {
+        ws.send(data);
+    } else {
+        alert("No connection => No quiz start");
+    }
+};
