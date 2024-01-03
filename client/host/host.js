@@ -1,7 +1,15 @@
-import { DEBUG } from "../constants.js";
+import URLParams from "../lib/URLParams.js";
 import { newWSConnection } from "../lib/connection.js";
 import { $ } from "../lib/dom.js";
 import { ChartDisplay } from "./components/chartDisplay.js";
+
+const params = URLParams();
+const sessionID = params.get("id");
+
+if (!sessionID) {
+    window.location.href = "../";
+    throw new Error("No id provided");
+}
 
 // UI object used for mutating/navigating the page (simulating one-page-application)
 const UI = {
@@ -16,25 +24,28 @@ const UI = {
 /** @type {ChartDisplay} */
 let chartDisplay = null;
 
-/**
- * id of the session to be created
- * TODO: make random or user input
- * @type {string}
- */
-const ID = "1234";
+const joinURL = `${window.location.origin}/participate#id=${sessionID}`;
+$("weburl").innerText = joinURL;
+
+const qrSize = Math.min(window.innerWidth, window.innerHeight) * 0.75;
 
 // create the QR code, directing to the active participate page
-new QRCode($("qrcode"), `${window.location.origin}/participate#id=${ID}`);
+new QRCode($("qrcode"), {
+    text: joinURL,
+    width: qrSize,
+    height: qrSize,
+    colorDark: "#ff00d4",
+    colorLight: "#050612",
+    correctLevel: QRCode.CorrectLevel.H,
+});
 
 // connect to the server / create the session
-const ws = newWSConnection(undefined, "host", ID);
+const ws = newWSConnection(undefined, "host", sessionID);
 
 ws.onopen = (_) => {};
 
 ws.onmessage = (ev) => {
-    /**
-     * @type {Action}
-     */
+    /** @type {Action} */
     const action = JSON.parse(ev.data);
 
     // handle action

@@ -1,11 +1,11 @@
-#qrcode {
-    border: 2pt solid black;
-    border-radius: var(--border-radius);
-}
-
 #pre-start {
     display: flex;
     flex-direction: column;
     text-align: center;
+    align-items: center;
     gap: 20pt;
+}
+
+#qrcode {
+    width: fit-content;
 }

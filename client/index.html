@@ -5,11 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="main.css" />
         <title>Quick Poll</title>
+        <script defer type="module" src="./index.js"></script>
     </head>
     <body>
         <div id="root">
             <h1>Quick Poll</h1>
-            <form
+            <div
                 style="
                     display: flex;
                     flex-direction: column;
@@ -19,13 +20,13 @@
                     gap: 5pt;
                 "
             >
-                <input type="text" placeholder="ID" />
+                <input type="text" placeholder="ID" id="sessionID" />
                 <br />
                 <div>
-                    <button>Join</button>
-                    <button>Host</button>
+                    <button id="joinButton">Join</button>
+                    <button id="hostButton">Host</button>
                 </div>
-            </form>
+            </div>
         </div>
     </body>
 </html>

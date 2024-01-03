@@ -1,4 +1,4 @@
-import { create } from "../../lib/dom";
+import { create } from "../../lib/dom.js";
 
 export class ChartDisplay {
     /** @type {HTMLElement} */
