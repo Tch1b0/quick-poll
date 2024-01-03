@@ -8,6 +8,7 @@
         <!-- styles -->
         <link rel="stylesheet" href="../main.css" />
         <link rel="stylesheet" href="./host.css" />
+        <link rel="stylesheet" href="../spinner.css" />
 
         <!-- imports -->
         <script
@@ -28,6 +29,14 @@
     </head>
     <body>
         <div class="root" id="root">
+            <div id="loadingElements">
+                <h1>Creating Session...</h1>
+                <div class="ping">
+                    <div class="p1"></div>
+                    <div class="p2"></div>
+                    <div class="p3"></div>
+                </div>
+            </div>
             <div id="pre-start">
                 <h3 id="weburl"></h3>
                 <div id="qrcode"></div>

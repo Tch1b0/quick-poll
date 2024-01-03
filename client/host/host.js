@@ -3,7 +3,7 @@ import { newWSConnection } from "../lib/connection.js";
 import { $ } from "../lib/dom.js";
 import { ChartDisplay } from "./components/chartDisplay.js";
 
-const params = URLParams();
+const params = URLParams(window.location.href);
 const sessionID = params.get("id");
 
 if (!sessionID) {
@@ -15,6 +15,12 @@ if (!sessionID) {
 const UI = {
     root: $("root"),
     preStartElements: $("pre-start"),
+    loadingElements: $("loadingElements"),
+
+    displayStart() {
+        this.loadingElements.style.display = "none";
+        this.preStartElements.style.display = "block";
+    },
 
     startQuiz() {
         this.root.removeChild(this.preStartElements);
@@ -42,7 +48,9 @@ new QRCode($("qrcode"), {
 // connect to the server / create the session
 const ws = newWSConnection(undefined, "host", sessionID);
 
-ws.onopen = (_) => {};
+ws.onopen = (_) => {
+    UI.displayStart();
+};
 
 ws.onmessage = (ev) => {
     /** @type {Action} */
