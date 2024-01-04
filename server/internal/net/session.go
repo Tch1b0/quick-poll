@@ -18,6 +18,15 @@ func (s *Session) AddClient(c *Client) {
 	s.Clients = append(s.Clients, c)
 
 	go s.ClientListenLoop(c)
+	s.SendHostCurrentState()
+
+	// if quiz already started, send it to the new client
+	if s.CurrentQuiz != nil {
+		c.Ws.WriteJSON(Action{
+			Type: "quiz",
+			Data: s.CurrentQuiz,
+		})
+	}
 }
 
 func (s *Session) ClientListenLoop(c *Client) {
@@ -136,6 +145,15 @@ func (s Session) SendAll(v any) {
 	s.SendHosts(v)
 }
 
+func (s Session) SendHostCurrentState() {
+	s.SendHosts(Action{
+		Type: "state",
+		Data: map[string]any{
+			"clientCount": len(s.Clients),
+		},
+	})
+}
+
 func (s *Session) removeClient(selectedClient *Client) {
 	newClients := []*Client{}
 	for _, c := range s.Clients {
@@ -146,6 +164,7 @@ func (s *Session) removeClient(selectedClient *Client) {
 	}
 
 	s.Clients = newClients
+	s.SendHostCurrentState()
 }
 
 func (s *Session) removeHost(selectedHost *Host) {

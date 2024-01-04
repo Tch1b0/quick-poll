@@ -1,6 +1,6 @@
 import URLParams from "../lib/URLParams.js";
 import { newWSConnection } from "../lib/connection.js";
-import { $ } from "../lib/dom.js";
+import { $, $$ } from "../lib/dom.js";
 import { IS_DEBUG } from "../lib/environment.js";
 import renderIdle from "./components/renderIdle.js";
 import renderQuiz from "./components/renderQuiz.js";
@@ -38,7 +38,7 @@ const UI = {
     renderQuiz(quiz) {
         this.root.innerHTML = renderQuiz(quiz);
 
-        for (const input of this.root.querySelectorAll("input")) {
+        for (const input of $$("input")) {
             const t = input.getAttribute("type");
             if (t === "radio") {
                 // submit state on selection
@@ -78,6 +78,7 @@ function handleInput(ev) {
 }
 
 function informServer() {
+    console.log(`sent: "${JSON.stringify(answers)}"`);
     ws.send(JSON.stringify(answers));
 }
 
@@ -90,15 +91,6 @@ if (IS_DEBUG) {
                 question: "Wie heißt du?",
                 type: "input",
                 answers: null,
-            },
-            {
-                question: "Wer war Jeffrey Epstein?",
-                type: "select",
-                answers: [
-                    "Jeffrey Epstein",
-                    "Jeffrey Epstein 2",
-                    "Jeffrey Epstein 3",
-                ],
             },
             {
                 question: "What is the capital of France?",

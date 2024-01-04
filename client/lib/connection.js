@@ -10,7 +10,7 @@ const BASE_URL = IS_DEBUG ? DEBUG_API_HOST : PROD_API_HOST;
  * @param {string} url
  * @param {"host" | "client"} type
  * @param {string} id
- * @returns
+ * @returns {WebSocket}
  */
 export function newWSConnection(url = BASE_URL, type, id) {
     return new WebSocket(`${url}/${type}/${id}`);

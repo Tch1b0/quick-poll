@@ -73,6 +73,12 @@ ws.onmessage = (ev) => {
             for (const data of action.data) {
                 chartDisplay.update(data);
             }
+            return;
+        }
+
+        case "state": {
+            $("clientCount").innerText = String(action.data.clientCount);
+            return;
         }
     }
 };
