@@ -19,9 +19,7 @@ if (!sessionID) {
 const UI = {
     root: $("root"),
 
-    /**
-     * @param {Action?} action
-     */
+    /** @param {Action} action */
     loadState(action) {
         if (action.type === "idle") {
             this.renderIdle();

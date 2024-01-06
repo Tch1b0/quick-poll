@@ -1,7 +1,6 @@
 import URLParams from "../lib/URLParams.js";
 import { newWSConnection } from "../lib/connection.js";
 import { $ } from "../lib/dom.js";
-import { IS_DEBUG } from "../lib/environment.js";
 import { ChartDisplay } from "./components/chartDisplay.js";
 
 const params = URLParams(window.location.href);

@@ -3,13 +3,10 @@
     flex-direction: column;
     text-align: center;
     align-items: center;
+    align-content: center;
     gap: 20pt;
 
     display: none;
-}
-
-#qrcode {
-    width: fit-content;
 }
 
 #loadingElements {

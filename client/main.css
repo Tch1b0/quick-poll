@@ -17,7 +17,7 @@ body {
 
 input {
     font-family: Oswald;
-    font-size: 200%;
+    font-size: 150%;
     padding: 1pt;
     border-radius: var(--border-radius);
     font-weight: bolder;
@@ -27,7 +27,8 @@ input {
 button {
     font-family: Oswald;
     font-size: 200%;
-    padding: 50pt;
+    padding: 25pt;
+    width: min-content;
 
     background-image: linear-gradient(to bottom right, #f20089, #8900f2);
     transition: 1s;
@@ -48,8 +49,8 @@ h1 {
 
 .root {
     display: flex;
-    width: 100%;
     flex-direction: column;
+    width: 100%;
     justify-content: center;
     align-content: center;
     align-items: center;
