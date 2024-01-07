@@ -93,12 +93,22 @@ $("btn").onclick = (_) => {
             title: "Test",
             questions: [
                 {
-                    question: "What is the capital of France?",
+                    question: "Was ist die Hauptstadt von Frankreich?",
                     type: "select",
                     answers: ["Paris", "Berlin", "Madrid", "Rome"],
                 },
                 {
-                    question: "What is the capital of Germany?",
+                    question: "Wie heißt die Hauptstadt von Deutschland?",
+                    type: "input",
+                    answers: [],
+                },
+                {
+                    question: "Was war die beste Fortnite Season",
+                    type: "select",
+                    answers: ["Season 1", "Season 2", "Season 3", "Season 4"],
+                },
+                {
+                    question: "Was ergibt 50 * 3?",
                     type: "input",
                     answers: [],
                 },
