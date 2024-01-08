@@ -1,6 +1,11 @@
-# Quick Poll
+<div align="center">
+    <img src="./client/icons/icon-256.png" alt="logo">
+    <h1>Quick Poll</h1>
+    <img alt="GitHub License" src="https://img.shields.io/github/license/Tch1b0/quick-poll"> <img alt="GitHub issues" src="https://img.shields.io/github/issues/Tch1b0/quick-poll">
 
-quickly take a poll
+    <p>quickly take a poll</p>
+
+</div>
 
 ## About
 
