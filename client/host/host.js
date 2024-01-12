@@ -147,9 +147,16 @@ $("btn").addEventListener("click", (_) => {
                     answers: [],
                 },
                 {
-                    question: "Was ergibt 50 * 3?",
-                    type: "input",
-                    answers: [],
+                    question:
+                        "Welche Social Media Plattform nutzt du am meisten?",
+                    type: "select",
+                    answers: [
+                        "Instagram",
+                        "YouTube",
+                        "TikTok",
+                        "Reddit",
+                        "Andere",
+                    ],
                 },
             ],
         },

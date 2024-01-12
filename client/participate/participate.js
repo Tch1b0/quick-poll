@@ -1,5 +1,5 @@
 import { getURLParams } from "../lib/URLParams.js";
-import { newWSConnection } from "../lib/connection.js";
+import { isDebugServerAvailable, newWSConnection } from "../lib/connection.js";
 import { $, $$ } from "../lib/dom.js";
 import { IS_DEBUG } from "../lib/environment.js";
 import renderIdle from "./components/renderIdle.js";
@@ -89,16 +89,19 @@ window.finishPoll = () => {
     UI.renderDone();
 };
 
-if (IS_DEBUG) {
+(async () => {
+    if (!IS_DEBUG || (await isDebugServerAvailable())) {
+        return;
+    }
+
+    alert(
+        "You are in debug mode => the following poll is not live\n\nSwitch to qp.johannespour.de for full functionality "
+    );
+
     // sample quiz, used for debugging
     UI.renderQuiz({
         title: "Test",
         questions: [
-            {
-                question: "Wie heißt du?",
-                type: "input",
-                answers: null,
-            },
             {
                 question: "What is the capital of France?",
                 type: "select",
@@ -121,4 +124,4 @@ if (IS_DEBUG) {
             },
         ],
     });
-}
+})();

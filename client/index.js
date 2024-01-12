@@ -1,4 +1,4 @@
-import { isServerAvailable } from "./lib/connection.js";
+import { isDebugServerAvailable } from "./lib/connection.js";
 import { $ } from "./lib/dom.js";
 import { IS_DEBUG } from "./lib/environment.js";
 
@@ -27,7 +27,7 @@ joinButton.addEventListener("click", () => {
 // run in asynchronous thread
 (async () => {
     // check if in debug env and if server is available
-    if (!IS_DEBUG || (await isServerAvailable())) return;
+    if (!IS_DEBUG || (await isDebugServerAvailable())) return;
 
     // server not available and in debug env
     const confirmed = window.confirm(

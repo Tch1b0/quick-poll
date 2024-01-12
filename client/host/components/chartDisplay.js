@@ -47,6 +47,8 @@ export class ChartDisplay {
     #setup() {
         const charts = [];
 
+        Chart.defaults.color = "#ddd";
+
         let i = 0;
         for (const q of this.#quiz.data.questions) {
             const ID = `chart-q-${i}`;
