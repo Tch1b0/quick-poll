@@ -48,7 +48,7 @@ export default function (quiz) {
             <div class="questions">
                 ${questions.join("")}
             </div>
-            <button>Fertig</button>
+            <button onclick="finishPoll()">Fertig</button>
         </div>
     `;
 }

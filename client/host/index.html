@@ -42,10 +42,24 @@
                 </div>
             </div>
             <div id="pre-start">
-                <h3 id="weburl"></h3>
+                <pre id="weburl"></pre>
                 <div id="qrcode"></div>
                 <br />
-                <button id="btn">Start</button>
+                <div class="poll-container">
+                    <div class="poll">
+                        <input type="text" id="pollTitle" placeholder="Titel" />
+                        <select name="Typ" id="pollType">
+                            <option value="select">Auswahl</option>
+                            <option value="input">Eingabe</option>
+                        </select>
+                        <input
+                            type="text"
+                            id="pollAnswers"
+                            placeholder="Antwort1, Antwort2, ..."
+                        />
+                    </div>
+                </div>
+                <button id="btn">Starten</button>
             </div>
         </div>
     </body>

@@ -1,9 +1,9 @@
-import URLParams from "../lib/URLParams.js";
+import { getURLParams } from "../lib/URLParams.js";
 import { newWSConnection } from "../lib/connection.js";
 import { $ } from "../lib/dom.js";
 import { ChartDisplay } from "./components/chartDisplay.js";
 
-const params = URLParams(window.location.href);
+const params = getURLParams(window.location.href);
 const sessionID = params.get("id");
 
 if (!sessionID) {
@@ -50,6 +50,7 @@ const ws = newWSConnection(undefined, "host", sessionID);
 
 ws.onopen = (_) => {
     UI.displayStart();
+    console.log("WebSocket successfully connected");
 };
 
 ws.onmessage = (ev) => {
@@ -84,28 +85,66 @@ ws.onmessage = (ev) => {
 
 ws.onclose = (_) => {
     alert("WebSocket disconnected");
+    console.error("something went wrong with the websocket");
 };
 
-$("btn").onclick = (_) => {
-    const raw = {
+/**
+ * @returns {QuizData?}
+ */
+function parseFormQuiz() {
+    let question, type, answers;
+    const logInvalidForm = () =>
+        console.info("invalid poll form, defaulting to example poll");
+
+    try {
+        question = $("pollTitle").value;
+        type = $("pollType").value;
+        answers = $("pollAnswers")
+            .value.split(",")
+            .map((v) => v.trim());
+    } catch {
+        logInvalidForm();
+        return null;
+    }
+
+    if (!question || !type || !answers) {
+        logInvalidForm();
+        return null;
+    }
+
+    return {
+        title: "Umfrage",
+        questions: [
+            {
+                question,
+                type,
+                answers,
+            },
+        ],
+    };
+}
+
+$("btn").addEventListener("click", (_) => {
+    const rawPoll = {
         type: "quiz",
-        data: {
-            title: "Test",
+        data: parseFormQuiz() ?? {
+            title: "Beispielumfrage",
             questions: [
                 {
-                    question: "Was ist die Hauptstadt von Frankreich?",
+                    question:
+                        "Welche Programmiersprache fällt dir am leichtesten?",
                     type: "select",
-                    answers: ["Paris", "Berlin", "Madrid", "Rome"],
+                    answers: ["Java", "JavaScript", "C++"],
                 },
                 {
-                    question: "Wie heißt die Hauptstadt von Deutschland?",
+                    question: "Welches Betriebssystem hat dein Handy?",
+                    type: "select",
+                    answers: ["Android", "iOS"],
+                },
+                {
+                    question: "Wie heißt dein Lieblingsspiel?",
                     type: "input",
                     answers: [],
-                },
-                {
-                    question: "Was war die beste Fortnite Season",
-                    type: "select",
-                    answers: ["Season 1", "Season 2", "Season 3", "Season 4"],
                 },
                 {
                     question: "Was ergibt 50 * 3?",
@@ -115,13 +154,14 @@ $("btn").onclick = (_) => {
             ],
         },
     };
-    const data = JSON.stringify(raw);
-    chartDisplay = new ChartDisplay($("root"), raw);
+
+    const poll = JSON.stringify(rawPoll);
+    chartDisplay = new ChartDisplay($("root"), rawPoll);
     UI.startQuiz();
 
     if (ws.readyState === ws.OPEN) {
-        ws.send(data);
+        ws.send(poll);
     } else {
         alert("No connection => No quiz start");
     }
-};
+});

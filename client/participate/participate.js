@@ -1,11 +1,12 @@
-import URLParams from "../lib/URLParams.js";
+import { getURLParams } from "../lib/URLParams.js";
 import { newWSConnection } from "../lib/connection.js";
 import { $, $$ } from "../lib/dom.js";
 import { IS_DEBUG } from "../lib/environment.js";
 import renderIdle from "./components/renderIdle.js";
 import renderQuiz from "./components/renderQuiz.js";
+import renderDone from "./components/renderDone.js";
 
-const params = URLParams();
+const params = getURLParams();
 const sessionID = params.get("id");
 let answers = [];
 
@@ -47,6 +48,10 @@ const UI = {
             }
         }
     },
+
+    renderDone() {
+        this.root.innerHTML = renderDone();
+    },
 };
 
 // connect to session
@@ -79,6 +84,10 @@ function informServer() {
     console.log(`sent: "${JSON.stringify(answers)}"`);
     ws.send(JSON.stringify(answers));
 }
+
+window.finishPoll = () => {
+    UI.renderDone();
+};
 
 if (IS_DEBUG) {
     // sample quiz, used for debugging

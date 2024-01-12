@@ -16,6 +16,15 @@ export class ChartDisplay {
     /** @type {(() => void)[]} */
     #deferredCallbacksQueue = [];
 
+    /** @type {Array} */
+    #infoQueue = [];
+
+    /** @type {HTMLButtonElement} */
+    #freezeBtn;
+
+    /** @type {boolean} */
+    #frozen = false;
+
     /**
      * @param {HTMLElement} root
      * @param {QuizData} quiz
@@ -99,6 +108,14 @@ export class ChartDisplay {
                 return d;
             })
         );
+        const freezeBtn = create("button");
+        freezeBtn.innerText = "Einfrieren";
+        freezeBtn.addEventListener("click", () => {
+            this.#freezeBtnClick();
+        });
+        this.#freezeBtn = freezeBtn;
+
+        div.appendChild(freezeBtn);
 
         return div;
     }
@@ -127,6 +144,10 @@ export class ChartDisplay {
      * @param {{id: string, answers: string[]}} info
      */
     update(info) {
+        if (this.#frozen) {
+            this.#infoQueue.push(info);
+            return;
+        }
         this.#infos.set(info.id, info.answers);
 
         this.#renderCharts();
@@ -193,5 +214,17 @@ export class ChartDisplay {
             labels: uniqueAnswers,
             data: data,
         };
+    }
+
+    #freezeBtnClick() {
+        this.#frozen = !this.#frozen;
+        this.#freezeBtn.innerText = this.#frozen ? "Auftauen" : "Einfrieren";
+
+        if (!this.#frozen) {
+            for (const i of this.#infoQueue) {
+                this.update(i);
+            }
+            this.#infoQueue = [];
+        }
     }
 }

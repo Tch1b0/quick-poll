@@ -1,11 +1,11 @@
 /** 
   @typedef {
     "idle" | "quiz"
-    } QuizType
+  } QuizType
   
   @typedef {{
     question: string,
-    type: string,
+    type: QuizType,
     answers: string[]
   }} Question
 

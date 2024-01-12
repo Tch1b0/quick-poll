@@ -50,6 +50,7 @@ input {
 }
 
 input[type="text"] {
+    text-transform: lowercase;
     width: 85%;
 }
 

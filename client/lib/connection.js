@@ -15,3 +15,12 @@ const BASE_URL = IS_DEBUG ? DEBUG_API_HOST : PROD_API_HOST;
 export function newWSConnection(url = BASE_URL, type, id) {
     return new WebSocket(`${url}/${type}/${id}`);
 }
+
+export async function isServerAvailable() {
+    try {
+        const resp = await fetch(BASE_URL, { method: "GET" });
+        return resp.status == 200;
+    } catch {
+        return false;
+    }
+}
