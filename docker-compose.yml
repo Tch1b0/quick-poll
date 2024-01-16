@@ -6,9 +6,11 @@ services:
         container_name: client
         ports:
             - "5030:80"
+        restart: always
 
     server:
         build: ./server
         container_name: server
         ports:
             - "5031:8080"
+        restart: always
