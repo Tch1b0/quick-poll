@@ -16,6 +16,14 @@ if (!sessionID) {
     throw new Error("No id provided");
 }
 
+const isFirstTimeAccess =
+    localStorage.getItem(`joined-session-${sessionID}`) === null;
+
+if (!isFirstTimeAccess) {
+    window.location.href = "../";
+    throw new Error(`User already participated in session "${sessionID}"`);
+}
+
 // UI object used for mutating/navigating the page (simulating one-page-application)
 const UI = {
     root: $("root"),
@@ -47,6 +55,8 @@ const UI = {
                 input.addEventListener("blur", handleInput);
             }
         }
+
+        localStorage.setItem(`joined-session-${sessionID}`, true);
     },
 
     renderDone() {
