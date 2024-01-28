@@ -20,6 +20,7 @@ export default function (quiz) {
 
                 j++;
             }
+
             questions.push(`
                 <form class="question">
                     <p class="question-title">${q.question}</p>
