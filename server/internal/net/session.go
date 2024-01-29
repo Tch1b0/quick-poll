@@ -97,6 +97,8 @@ func (s *Session) processAction(a Action) error {
 
 		s.StartQuiz(quiz)
 		return nil
+	} else if a.Type == "close" {
+		s.Active = false
 	}
 
 	return fmt.Errorf("invalid action type \"%s\"", a.Type)
@@ -180,6 +182,15 @@ func (s *Session) removeHost(selectedHost *Host) {
 
 	if len(s.Hosts) == 0 {
 		s.Active = false
+	}
+}
+
+func (s *Session) EndSession() {
+	s.Active = false
+
+	s.Hosts[0].Ws.Close()
+	for _, c := range s.Clients {
+		c.Ws.Close()
 	}
 }
 

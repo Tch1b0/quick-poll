@@ -16,6 +16,14 @@ if (!sessionID) {
     throw new Error("No id provided");
 }
 
+const isFirstTimeAccess =
+    localStorage.getItem(`joined-session-${sessionID}`) === null;
+
+if (!isFirstTimeAccess) {
+    window.location.href = "../";
+    throw new Error(`User already participated in session "${sessionID}"`);
+}
+
 // UI object used for mutating/navigating the page (simulating one-page-application)
 const UI = {
     root: $("root"),
@@ -81,6 +89,8 @@ function handleInput(ev) {
 }
 
 function informServer() {
+    localStorage.setItem(`joined-session-${sessionID}`, true);
+
     console.log(`sent: "${JSON.stringify(answers)}"`);
     ws.send(JSON.stringify(answers));
 }

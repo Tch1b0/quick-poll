@@ -84,6 +84,11 @@ ws.onmessage = (ev) => {
 };
 
 ws.onclose = (_) => {
+    const closeAction = {
+        type: "close",
+    };
+    ws.send(JSON.stringify(closeAction));
+
     alert("WebSocket disconnected");
     console.error("something went wrong with the websocket");
 };
