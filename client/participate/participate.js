@@ -55,8 +55,6 @@ const UI = {
                 input.addEventListener("blur", handleInput);
             }
         }
-
-        localStorage.setItem(`joined-session-${sessionID}`, true);
     },
 
     renderDone() {
@@ -91,6 +89,8 @@ function handleInput(ev) {
 }
 
 function informServer() {
+    localStorage.setItem(`joined-session-${sessionID}`, true);
+
     console.log(`sent: "${JSON.stringify(answers)}"`);
     ws.send(JSON.stringify(answers));
 }
