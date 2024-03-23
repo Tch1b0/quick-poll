@@ -10,7 +10,9 @@
 ## About
 
 Quick Poll is using [WebSockets](https://de.wikipedia.org/wiki/WebSocket) to
-immediately transmit and evaluate the entries of the poll
+immediately transmit and evaluate the entries of the poll.
+
+Want to know more? You can read [my blog article](https://johannespour.de/projects/737780898).
 
 ## Host
 
