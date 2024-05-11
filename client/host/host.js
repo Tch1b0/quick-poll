@@ -3,13 +3,15 @@ import { newWSConnection } from "../lib/connection.js";
 import { $ } from "../lib/dom.js";
 import { ChartDisplay } from "./components/chartDisplay.js";
 
-const params = getURLParams(window.location.href);
-const sessionID = params.get("id");
+// const params = getURLParams(window.location.href);
+// const sessionID = params.get("id");
 
-if (!sessionID) {
-    window.location.href = "../";
-    throw new Error("No id provided");
-}
+// if (!sessionID) {
+//     window.location.href = "../";
+//     throw new Error("No id provided");
+// }
+
+let sessionId;
 
 // UI object used for mutating/navigating the page (simulating one-page-application)
 const UI = {
@@ -46,7 +48,7 @@ new QRCode($("qrcode"), {
 });
 
 // connect to the server / create the session
-const ws = newWSConnection(undefined, "host", sessionID);
+const ws = newWSConnection(undefined, "host");
 
 ws.onopen = (_) => {
     UI.displayStart();
