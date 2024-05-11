@@ -43,6 +43,20 @@ func main() {
 		sc.Add(s)
 	})
 
+	s.GET("/host", func(c *gin.Context) {
+		id := sc.GenerateUniqueID()
+
+		ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+		if err != nil {
+			c.String(http.StatusInternalServerError, "Failed to upgrade to websocket")
+			return
+		}
+		host := net.NewHost(ws)
+		s := net.NewSession(id)
+		s.AddHost(&host)
+		sc.Add(s)
+	})
+
 	s.GET("/client/:id", func(c *gin.Context) {
 		id := c.Param("id")
 
