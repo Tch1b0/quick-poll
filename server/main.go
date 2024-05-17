@@ -24,7 +24,7 @@ func main() {
 		c.String(200, "ok")
 	})
 
-	s.GET("/host/:id", func(c *gin.Context) {
+	s.GET("/host/id/:id", func(c *gin.Context) {
 		id := c.Param("id")
 
 		if sc.GetById(id) != nil {
@@ -55,6 +55,12 @@ func main() {
 		s := net.NewSession(id)
 		s.AddHost(&host)
 		sc.Add(s)
+		s.SendHosts(net.Action{
+			Type: "session-created",
+			Data: map[string]string{
+				"id": id,
+			},
+		})
 	})
 
 	s.GET("/client/:id", func(c *gin.Context) {

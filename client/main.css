@@ -101,11 +101,11 @@ footer {
     gap: 15pt;
 }
 
-img {
+img.socials {
     filter: brightness(0) invert(1);
     transition: all 250ms;
 }
 
-img:hover {
+img.socials:hover {
     filter: brightness(1);
 }

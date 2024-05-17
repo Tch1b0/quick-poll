@@ -13,7 +13,8 @@ const BASE_URL = IS_DEBUG ? `ws://${DEBUG_API_HOST}` : `wss://${PROD_API_HOST}`;
  * @returns {WebSocket}
  */
 export function newWSConnection(url = BASE_URL, type, id = "") {
-    return new WebSocket(`${url}/${type}/${id}`);
+    const hasID = id !== "";
+    return new WebSocket(`${url}/${type}` + (hasID ? "/" + id : ""));
 }
 
 export async function isDebugServerAvailable() {

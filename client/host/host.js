@@ -11,7 +11,7 @@ import { ChartDisplay } from "./components/chartDisplay.js";
 //     throw new Error("No id provided");
 // }
 
-let sessionId;
+let sessionID;
 
 // UI object used for mutating/navigating the page (simulating one-page-application)
 const UI = {
@@ -32,20 +32,22 @@ const UI = {
 /** @type {ChartDisplay} */
 let chartDisplay = null;
 
-const joinURL = `${window.location.origin}/participate#id=${sessionID}`;
-$("weburl").innerText = joinURL;
+function onSessionCreated() {
+    const joinURL = `${window.location.origin}/participate#id=${sessionID}`;
+    $("weburl").innerText = joinURL;
 
-const qrSize = Math.min(window.innerWidth, window.innerHeight) * 0.75;
+    const qrSize = Math.min(window.innerWidth, window.innerHeight) * 0.75;
 
-// create the QR code, directing to the active participate page
-new QRCode($("qrcode"), {
-    text: joinURL,
-    width: qrSize,
-    height: qrSize,
-    colorDark: "#ff00d4",
-    colorLight: "#050612",
-    correctLevel: QRCode.CorrectLevel.H,
-});
+    // create the QR code, directing to the active participate page
+    new QRCode($("qrcode"), {
+        text: joinURL,
+        width: qrSize,
+        height: qrSize,
+        colorDark: "#ff00d4",
+        colorLight: "#050612",
+        correctLevel: QRCode.CorrectLevel.H,
+    });
+}
 
 // connect to the server / create the session
 const ws = newWSConnection(undefined, "host");
@@ -61,6 +63,11 @@ ws.onmessage = (ev) => {
 
     // handle action
     switch (action.type) {
+        case "session-created": {
+            sessionID = action.data["id"];
+            console.log(sessionID);
+            onSessionCreated();
+        }
         // noop on idle, as it was sent from here
         case "idle":
             return;
