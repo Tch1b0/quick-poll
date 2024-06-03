@@ -12,6 +12,21 @@ import { ChartDisplay } from "./components/chartDisplay.js";
 // }
 
 let sessionID;
+let joinURL;
+
+function createQR(el) {
+    const qrSize = Math.min(window.innerWidth, window.innerHeight) * 0.5;
+
+    // create the QR code, directing to the active participate page
+    qr = new QRCode(el, {
+        text: joinURL,
+        width: qrSize,
+        height: qrSize,
+        colorDark: "snow",
+        colorLight: "#050612",
+        correctLevel: QRCode.CorrectLevel.H,
+    });
+}
 
 // UI object used for mutating/navigating the page (simulating one-page-application)
 const UI = {
@@ -26,6 +41,7 @@ const UI = {
 
     startQuiz() {
         this.root.removeChild(this.preStartElements);
+        createQR($("qrcode-2"));
     },
 };
 
@@ -33,20 +49,10 @@ const UI = {
 let chartDisplay = null;
 
 function onSessionCreated() {
-    const joinURL = `${window.location.origin}/participate#id=${sessionID}`;
+    joinURL = `${window.location.origin}/participate#id=${sessionID}`;
     $("weburl").innerText = joinURL;
 
-    const qrSize = Math.min(window.innerWidth, window.innerHeight) * 0.75;
-
-    // create the QR code, directing to the active participate page
-    new QRCode($("qrcode"), {
-        text: joinURL,
-        width: qrSize,
-        height: qrSize,
-        colorDark: "#ff00d4",
-        colorLight: "#050612",
-        correctLevel: QRCode.CorrectLevel.H,
-    });
+    createQR($("qrcode"));
 }
 
 // connect to the server / create the session

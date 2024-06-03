@@ -21,14 +21,29 @@ h2 {
 }
 
 #pre-start {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     text-align: center;
     align-items: center;
     align-content: center;
-    gap: 20pt;
 
     display: none;
+}
+
+.pre-start-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 5vh;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    gap: 5vh;
+}
+
+@media (min-width: 600px) {
+    .pre-start-container {
+        flex-direction: row;
+    }
 }
 
 #loadingElements {
@@ -44,7 +59,6 @@ h2 {
 .poll-container {
     display: flex;
     flex-direction: row;
-    width: 100%;
     align-items: center;
     justify-content: center;
 }
