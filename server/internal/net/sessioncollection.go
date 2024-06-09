@@ -1,13 +1,9 @@
 package net
 
 import (
+	"fmt"
 	"math/rand"
-	"time"
 )
-
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
 
 type SessionCollection struct {
 	Sessions []*Session
@@ -15,6 +11,7 @@ type SessionCollection struct {
 
 func (sc *SessionCollection) Add(s *Session) {
 	sc.Sessions = append(sc.Sessions, s)
+	sc.Cleanup()
 }
 
 func (sc SessionCollection) GetById(id string) *Session {
@@ -35,6 +32,18 @@ func (sc SessionCollection) GenerateUniqueID() string {
 	}
 
 	return v
+}
+
+func (sc *SessionCollection) Cleanup() {
+	nSessions := []*Session{}
+	for _, s := range sc.Sessions {
+		if s.Active {
+			fmt.Println(s.Id)
+			fmt.Println(s.Active)
+			nSessions = append(nSessions, s)
+		}
+	}
+	sc.Sessions = nSessions
 }
 
 func genId(n int) string {

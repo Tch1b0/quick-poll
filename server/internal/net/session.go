@@ -82,6 +82,8 @@ func (s *Session) HostListenLoop(h *Host) {
 			fmt.Println(err)
 		}
 	}
+
+	s.removeHost(h)
 }
 
 func (s *Session) processAction(a Action) error {
