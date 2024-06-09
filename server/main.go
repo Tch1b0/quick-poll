@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/Tch1b0/quick-poll/internal/net"
@@ -62,7 +61,6 @@ func main() {
 				"id": id,
 			},
 		})
-		fmt.Println(len(sc.Sessions))
 	})
 
 	s.GET("/client/:id", func(c *gin.Context) {

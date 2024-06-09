@@ -1,7 +1,6 @@
 package net
 
 import (
-	"fmt"
 	"math/rand"
 )
 
@@ -38,8 +37,6 @@ func (sc *SessionCollection) Cleanup() {
 	nSessions := []*Session{}
 	for _, s := range sc.Sessions {
 		if s.Active {
-			fmt.Println(s.Id)
-			fmt.Println(s.Active)
 			nSessions = append(nSessions, s)
 		}
 	}
