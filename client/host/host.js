@@ -13,6 +13,7 @@ import { ChartDisplay } from "./components/chartDisplay.js";
 
 let sessionID;
 let joinURL;
+let qr;
 
 function createQR(el) {
     const qrSize = Math.min(window.innerWidth, window.innerHeight) * 0.5;
