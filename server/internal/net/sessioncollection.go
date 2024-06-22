@@ -1,7 +1,10 @@
 package net
 
 import (
+	"fmt"
 	"math/rand"
+
+	"github.com/Tch1b0/quick-poll/internal/logging"
 )
 
 type SessionCollection struct {
@@ -11,6 +14,8 @@ type SessionCollection struct {
 func (sc *SessionCollection) Add(s *Session) {
 	sc.Sessions = append(sc.Sessions, s)
 	sc.Cleanup()
+
+	sc.Info(fmt.Sprintf("added session #%s", s.Id))
 }
 
 func (sc SessionCollection) GetById(id string) *Session {
@@ -41,6 +46,12 @@ func (sc *SessionCollection) Cleanup() {
 		}
 	}
 	sc.Sessions = nSessions
+
+	sc.Info("ran cleanup")
+}
+
+func (sc SessionCollection) Info(msg string) {
+	logging.GetLogger().Info("SessionCollection", msg)
 }
 
 func genId(n int) string {
