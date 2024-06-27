@@ -34,6 +34,9 @@ func (s *Session) AddClient(c *Client) {
 
 func (s *Session) ClientListenLoop(c *Client) {
 	var err error = nil
+	c.SetCloseHandler(func() {
+		s.removeClient(c)
+	})
 
 	for s.Active && err == nil {
 		var data []string
@@ -50,6 +53,8 @@ func (s *Session) ClientListenLoop(c *Client) {
 			Data: []ClientInfo{c.Info()},
 		})
 	}
+
+	s.removeClient(c)
 }
 
 func (s *Session) AddHost(h *Host) {

@@ -79,6 +79,11 @@ func main() {
 		}
 
 		cl := net.NewClient(ws)
+		ws.SetCloseHandler(func(code int, text string) error {
+			cl.HandleClose()
+			ws.CloseHandler()(code, text)
+			return err
+		})
 		s.AddClient(&cl)
 	})
 

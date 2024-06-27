@@ -112,9 +112,26 @@ pre {
     display: none;
 }
 
-#addButton {
+.addRemoveButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 10pt;
+    min-width: 150px;
+    width: 10vw;
+}
+
+#addButton,
+#removeButton {
     padding: 0;
     margin: 0;
     width: 50%;
     height: 50%;
+}
+
+#addButton {
+    color: #26bf00;
+}
+
+#removeButton {
+    color: #bf0000;
 }

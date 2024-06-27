@@ -62,6 +62,11 @@ function onSessionCreated() {
     $("addButton").addEventListener("click", () => {
         quizLayout.addQuestion();
     });
+    $("removeButton").addEventListener("click", () => {
+        if (quizLayout.questions.length > 1) {
+            quizLayout.removeQuestion();
+        }
+    });
 }
 
 // connect to the server / create the session
