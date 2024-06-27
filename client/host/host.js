@@ -1,4 +1,3 @@
-import { getURLParams } from "../lib/URLParams.js";
 import { newWSConnection } from "../lib/connection.js";
 import { $ } from "../lib/dom.js";
 import { ChartDisplay } from "./components/chartDisplay.js";
@@ -17,7 +16,7 @@ let joinURL;
 let qr;
 
 function createQR(el) {
-    const qrSize = Math.min(window.innerWidth, window.innerHeight) * 0.5;
+    const qrSize = Math.min(window.innerWidth, window.innerHeight) * 0.4;
 
     // create the QR code, directing to the active participate page
     qr = new QRCode(el, {

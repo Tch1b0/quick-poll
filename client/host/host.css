@@ -1,4 +1,5 @@
-#qrcode {
+#qrcode,
+#qrcode-2 {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,6 +92,10 @@ pre {
 
 .join-help {
     padding: 20pt;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
     border: 3px solid yellow;
     border-radius: 10px;
 }
@@ -100,7 +105,6 @@ pre {
         position: absolute;
         left: 10pt;
         top: 10vh;
-        float: left;
     }
 }
 
