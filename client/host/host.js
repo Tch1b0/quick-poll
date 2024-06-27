@@ -69,6 +69,12 @@ function onSessionCreated() {
     });
 }
 
+$("headline").addEventListener("click", () => {
+    if (confirm("Zur Startseite gehen?")) {
+        window.location = "..";
+    }
+});
+
 // connect to the server / create the session
 const ws = newWSConnection(undefined, "host");
 

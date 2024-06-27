@@ -11,6 +11,16 @@ select {
 
 h2 {
     text-align: center;
+    font-family: Oswald;
+}
+
+#headline {
+    font-family: Rubik Doodle Shadow;
+    font-size: 200%;
+}
+
+#headline:hover {
+    cursor: pointer;
 }
 
 .charts {

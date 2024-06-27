@@ -68,3 +68,7 @@ input[type="text"] {
 .radio-answer {
     width: fit-content;
 }
+
+button {
+    margin-top: 20pt;
+}
