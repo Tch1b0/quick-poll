@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start Server",
+            "command": "go",
+            "args": ["run", "./main.go"],
+            "options": {
+                "cwd": "${workspaceFolder}/server"
+            }
+        },
+        {
+            "label": "Start Client",
+            "command": "${command:extension.liveServer.goOnline}",
+            "options": {
+                "cwd": "${workspaceFolder}/client"
+            }
+        },
+        {
+            "label": "Start",
+            "dependsOn": ["Start Server", "Start Client"],
+            "problemMatcher": []
+        }
+    ]
+}

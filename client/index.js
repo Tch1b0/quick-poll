@@ -7,16 +7,16 @@ const hostButton = $("hostButton");
 const joinButton = $("joinButton");
 
 hostButton.addEventListener("click", () => {
-    const val = sessionIDInput.value;
-    if (!val) {
-        console.error("No session ID provided");
-        return;
-    }
-    window.location.href = `./host#id=${val}`;
+    // const val = sessionIDInput.value;
+    // if (!val) {
+    //     console.error("No session ID provided");
+    //     return;
+    // }
+    window.location.href = `./host`;
 });
 
 joinButton.addEventListener("click", () => {
-    const val = sessionIDInput.value;
+    const val = prompt("Sitzungs-ID");
     if (!val) {
         console.error("No session ID provided");
         return;

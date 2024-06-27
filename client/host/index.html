@@ -32,7 +32,7 @@
     </head>
     <body>
         <div class="root" id="root">
-            <h3>Nutzer in Session: <span id="clientCount">0</span></h3>
+            <h2>Hosten</h2>
             <div id="loadingElements">
                 <h1>Erstelle Session...</h1>
                 <div class="ping">
@@ -41,22 +41,32 @@
                     <div class="p3"></div>
                 </div>
             </div>
+            <div id="post-start" class="join-help">
+                <!-- <pre id="weburl"></pre> -->
+                <h3>
+                    Nutzer in Session:
+                    <span id="clientCount">0</span>
+                </h3>
+                <pre>Beitreten mit Code: <span class="session-code" id="session-code-2"></span><br>oder<br>QR-Code scannen</pre>
+                <div id="qrcode-2"></div>
+            </div>
             <div id="pre-start">
-                <pre id="weburl"></pre>
-                <div id="qrcode"></div>
-                <br />
-                <div class="poll-container">
-                    <div class="poll">
-                        <input type="text" id="pollTitle" placeholder="Titel" />
-                        <select name="Typ" id="pollType">
-                            <option value="select">Auswahl</option>
-                            <option value="input">Eingabe</option>
-                        </select>
-                        <input
-                            type="text"
-                            id="pollAnswers"
-                            placeholder="Antwort1, Antwort2, ..."
-                        />
+                <div class="pre-start-container">
+                    <div class="join-help">
+                        <h3>
+                            Nutzer in Session:
+                            <span id="clientCount">0</span>
+                        </h3>
+                        <!-- <pre id="weburl"></pre> -->
+                        <pre>Beitreten mit Code: <span class="session-code" id="session-code"></span><br>oder<br>QR-Code scannen</pre>
+                        <div id="qrcode"></div>
+                    </div>
+                    <div class="poll-container">
+                        <div id="poll" class="poll"></div>
+                        <div class="addRemoveButtons">
+                            <button id="addButton">+</button
+                            ><button id="removeButton">-</button>
+                        </div>
                     </div>
                 </div>
                 <button id="btn">Starten</button>

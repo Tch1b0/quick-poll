@@ -24,7 +24,7 @@ func main() {
 		c.String(200, "ok")
 	})
 
-	s.GET("/host/:id", func(c *gin.Context) {
+	s.GET("/host/id/:id", func(c *gin.Context) {
 		id := c.Param("id")
 
 		if sc.GetById(id) != nil {
@@ -43,6 +43,26 @@ func main() {
 		sc.Add(s)
 	})
 
+	s.GET("/host", func(c *gin.Context) {
+		id := sc.GenerateUniqueID()
+
+		ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+		if err != nil {
+			c.String(http.StatusInternalServerError, "Failed to upgrade to websocket")
+			return
+		}
+		host := net.NewHost(ws)
+		s := net.NewSession(id)
+		s.AddHost(&host)
+		sc.Add(s)
+		s.SendHosts(net.Action{
+			Type: "session-created",
+			Data: map[string]string{
+				"id": id,
+			},
+		})
+	})
+
 	s.GET("/client/:id", func(c *gin.Context) {
 		id := c.Param("id")
 
@@ -59,6 +79,11 @@ func main() {
 		}
 
 		cl := net.NewClient(ws)
+		ws.SetCloseHandler(func(code int, text string) error {
+			cl.HandleClose()
+			ws.CloseHandler()(code, text)
+			return err
+		})
 		s.AddClient(&cl)
 	})
 

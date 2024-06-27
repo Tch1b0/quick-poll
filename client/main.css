@@ -2,7 +2,7 @@
 
 :root {
     --bg-color: #050612;
-    --prim-color: #ff00d4;
+    --prim-color: snow;
     --sec-color: #d4dfff;
     --ter-color: #f8edff;
     --border-radius: 5pt;
@@ -49,15 +49,21 @@ button {
     width: 40vw;
     text-align: center;
 
-    background-image: linear-gradient(to bottom right, #f20089, #8900f2);
-    transition: 1s;
+    transition: 0.5s;
     border: 0px;
     border-radius: var(--border-radius);
     color: var(--bg-color);
+
+    box-shadow: -2.5pt 2.5pt gray;
+}
+
+#hostButton {
+    background-color: linear-gradient(to bottom right, #00f200, #55f200);
 }
 
 button:hover {
     cursor: pointer;
+    transform: translateY(-5pt);
 }
 
 h1 {
@@ -77,4 +83,29 @@ h1 {
 
 #sessionID {
     width: 80vw;
+}
+
+footer {
+    bottom: 5pt;
+    position: absolute;
+    width: 99%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.ref-links {
+    display: flex;
+    flex-direction: row;
+    gap: 15pt;
+}
+
+img.socials {
+    filter: brightness(0) invert(1);
+    transition: all 250ms;
+}
+
+img.socials:hover {
+    filter: brightness(1);
 }

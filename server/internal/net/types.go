@@ -3,9 +3,18 @@ package net
 import "github.com/google/uuid"
 
 type Client struct {
-	Ws          WebSocket
-	ID          string
-	QuizAnswers []string
+	Ws           WebSocket
+	ID           string
+	QuizAnswers  []string
+	closeHandler func()
+}
+
+func (c *Client) SetCloseHandler(handler func()) {
+	c.closeHandler = handler
+}
+
+func (c Client) HandleClose() {
+	c.closeHandler()
 }
 
 func (c Client) Info() ClientInfo {

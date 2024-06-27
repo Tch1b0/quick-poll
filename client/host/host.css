@@ -1,4 +1,5 @@
-#qrcode {
+#qrcode,
+#qrcode-2 {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,14 +22,29 @@ h2 {
 }
 
 #pre-start {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     text-align: center;
     align-items: center;
     align-content: center;
-    gap: 20pt;
 
     display: none;
+}
+
+.pre-start-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 5vh;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    gap: 5vh;
+}
+
+@media (min-width: 600px) {
+    .pre-start-container {
+        flex-direction: row;
+    }
 }
 
 #loadingElements {
@@ -43,17 +59,79 @@ h2 {
 
 .poll-container {
     display: flex;
-    flex-direction: row;
-    width: 100%;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
 .poll {
     display: flex;
+    flex-direction: column;
     padding: 10pt;
     border-radius: var(--border-radius);
-    flex-direction: column;
     width: fit-content;
     gap: 5pt;
+}
+
+.question {
+    display: flex;
+    flex-direction: column;
+    padding: 10pt;
+    border-radius: var(--border-radius);
+    width: fit-content;
+    gap: 5pt;
+}
+
+pre {
+    font-size: 250%;
+}
+
+.session-code {
+    color: yellow;
+}
+
+.join-help {
+    padding: 20pt;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    border: 3px solid yellow;
+    border-radius: 10px;
+}
+
+@media (min-width: 1600px) {
+    .join-help {
+        position: absolute;
+        left: 10pt;
+        top: 10vh;
+    }
+}
+
+#post-start {
+    display: none;
+}
+
+.addRemoveButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 10pt;
+    min-width: 150px;
+    width: 10vw;
+}
+
+#addButton,
+#removeButton {
+    padding: 0;
+    margin: 0;
+    width: 50%;
+    height: 50%;
+}
+
+#addButton {
+    color: #26bf00;
+}
+
+#removeButton {
+    color: #bf0000;
 }

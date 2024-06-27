@@ -1,14 +1,32 @@
-import { getURLParams } from "../lib/URLParams.js";
 import { newWSConnection } from "../lib/connection.js";
 import { $ } from "../lib/dom.js";
 import { ChartDisplay } from "./components/chartDisplay.js";
+import { QuizLayout } from "./components/quizLayout.js";
 
-const params = getURLParams(window.location.href);
-const sessionID = params.get("id");
+// const params = getURLParams(window.location.href);
+// const sessionID = params.get("id");
 
-if (!sessionID) {
-    window.location.href = "../";
-    throw new Error("No id provided");
+// if (!sessionID) {
+//     window.location.href = "../";
+//     throw new Error("No id provided");
+// }
+
+let sessionID;
+let joinURL;
+let qr;
+
+function createQR(el) {
+    const qrSize = Math.min(window.innerWidth, window.innerHeight) * 0.4;
+
+    // create the QR code, directing to the active participate page
+    qr = new QRCode(el, {
+        text: joinURL,
+        width: qrSize,
+        height: qrSize,
+        colorDark: "yellow",
+        colorLight: "#050612",
+        correctLevel: QRCode.CorrectLevel.H,
+    });
 }
 
 // UI object used for mutating/navigating the page (simulating one-page-application)
@@ -24,29 +42,35 @@ const UI = {
 
     startQuiz() {
         this.root.removeChild(this.preStartElements);
+        createQR($("qrcode-2"));
+        $("session-code-2").innerText = sessionID;
+        $("post-start").style.display = "block";
     },
 };
 
 /** @type {ChartDisplay} */
 let chartDisplay = null;
+let quizLayout = new QuizLayout($("poll"));
 
-const joinURL = `${window.location.origin}/participate#id=${sessionID}`;
-$("weburl").innerText = joinURL;
+function onSessionCreated() {
+    joinURL = `${window.location.origin}/participate#id=${sessionID}`;
+    if (false) $("weburl").innerText = joinURL;
+    $("session-code").innerText = sessionID;
 
-const qrSize = Math.min(window.innerWidth, window.innerHeight) * 0.75;
-
-// create the QR code, directing to the active participate page
-new QRCode($("qrcode"), {
-    text: joinURL,
-    width: qrSize,
-    height: qrSize,
-    colorDark: "#ff00d4",
-    colorLight: "#050612",
-    correctLevel: QRCode.CorrectLevel.H,
-});
+    createQR($("qrcode"));
+    quizLayout.addQuestion();
+    $("addButton").addEventListener("click", () => {
+        quizLayout.addQuestion();
+    });
+    $("removeButton").addEventListener("click", () => {
+        if (quizLayout.questions.length > 1) {
+            quizLayout.removeQuestion();
+        }
+    });
+}
 
 // connect to the server / create the session
-const ws = newWSConnection(undefined, "host", sessionID);
+const ws = newWSConnection(undefined, "host");
 
 ws.onopen = (_) => {
     UI.displayStart();
@@ -59,6 +83,11 @@ ws.onmessage = (ev) => {
 
     // handle action
     switch (action.type) {
+        case "session-created": {
+            sessionID = action.data["id"];
+            console.log(sessionID);
+            onSessionCreated();
+        }
         // noop on idle, as it was sent from here
         case "idle":
             return;
@@ -97,35 +126,9 @@ ws.onclose = (_) => {
  * @returns {QuizData?}
  */
 function parseFormQuiz() {
-    let question, type, answers;
-    const logInvalidForm = () =>
-        console.info("invalid poll form, defaulting to example poll");
-
-    try {
-        question = $("pollTitle").value;
-        type = $("pollType").value;
-        answers = $("pollAnswers")
-            .value.split(",")
-            .map((v) => v.trim());
-    } catch {
-        logInvalidForm();
-        return null;
-    }
-
-    if (!question || !type || !answers) {
-        logInvalidForm();
-        return null;
-    }
-
     return {
         title: "Umfrage",
-        questions: [
-            {
-                question,
-                type,
-                answers,
-            },
-        ],
+        questions: quizLayout.toJSON(),
     };
 }
 

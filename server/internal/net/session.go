@@ -3,6 +3,7 @@ package net
 import (
 	"fmt"
 
+	"github.com/Tch1b0/quick-poll/internal/logging"
 	"github.com/Tch1b0/quick-poll/internal/quiz"
 )
 
@@ -27,10 +28,15 @@ func (s *Session) AddClient(c *Client) {
 			Data: s.CurrentQuiz,
 		})
 	}
+
+	s.sessionLog("added client")
 }
 
 func (s *Session) ClientListenLoop(c *Client) {
 	var err error = nil
+	c.SetCloseHandler(func() {
+		s.removeClient(c)
+	})
 
 	for s.Active && err == nil {
 		var data []string
@@ -47,6 +53,8 @@ func (s *Session) ClientListenLoop(c *Client) {
 			Data: []ClientInfo{c.Info()},
 		})
 	}
+
+	s.removeClient(c)
 }
 
 func (s *Session) AddHost(h *Host) {
@@ -68,6 +76,8 @@ func (s *Session) AddHost(h *Host) {
 	})
 
 	go s.HostListenLoop(h)
+
+	s.sessionLog("added host")
 }
 
 func (s *Session) HostListenLoop(h *Host) {
@@ -82,6 +92,8 @@ func (s *Session) HostListenLoop(h *Host) {
 			fmt.Println(err)
 		}
 	}
+
+	s.removeHost(h)
 }
 
 func (s *Session) processAction(a Action) error {
@@ -108,6 +120,8 @@ func (s *Session) StartIdle() {
 	s.SendAll(Action{
 		Type: "idle",
 	})
+
+	s.sessionLog("idle action is being performed")
 }
 
 func (s *Session) StartQuiz(quiz quiz.Data) {
@@ -116,6 +130,8 @@ func (s *Session) StartQuiz(quiz quiz.Data) {
 		Type: "quiz",
 		Data: s.CurrentQuiz,
 	})
+
+	s.sessionLog("quiz was started")
 }
 
 func (s Session) SendClients(v any) {
@@ -128,6 +144,8 @@ func (s Session) SendClients(v any) {
 			fmt.Println(err)
 		}
 	}
+
+	s.sessionLog("a message was sent to clients")
 }
 
 func (s Session) SendHosts(v any) {
@@ -140,11 +158,20 @@ func (s Session) SendHosts(v any) {
 			fmt.Println(err)
 		}
 	}
+
+	s.sessionLog("a message was sent to host")
 }
 
 func (s Session) SendAll(v any) {
 	s.SendClients(v)
 	s.SendHosts(v)
+
+	msg, ok := v.(string)
+	if ok {
+		s.sessionLog(fmt.Sprintf("sent message to all: %s", msg))
+	} else {
+		s.sessionLog("a message was sent to all")
+	}
 }
 
 func (s Session) SendHostCurrentState() {
@@ -154,6 +181,8 @@ func (s Session) SendHostCurrentState() {
 			"clientCount": len(s.Clients),
 		},
 	})
+
+	s.sessionLog("current state updated with hosts")
 }
 
 func (s *Session) removeClient(selectedClient *Client) {
@@ -167,6 +196,8 @@ func (s *Session) removeClient(selectedClient *Client) {
 
 	s.Clients = newClients
 	s.SendHostCurrentState()
+
+	s.sessionLog("client removed")
 }
 
 func (s *Session) removeHost(selectedHost *Host) {
@@ -183,6 +214,8 @@ func (s *Session) removeHost(selectedHost *Host) {
 	if len(s.Hosts) == 0 {
 		s.Active = false
 	}
+
+	s.sessionLog("host removed")
 }
 
 func (s *Session) EndSession() {
@@ -192,6 +225,12 @@ func (s *Session) EndSession() {
 	for _, c := range s.Clients {
 		c.Ws.Close()
 	}
+
+	s.sessionLog("session ended")
+}
+
+func (s Session) sessionLog(msg string) {
+	logging.GetLogger().Info(fmt.Sprintf("Session#%s", s.Id), msg)
 }
 
 func NewSession(id string) *Session {
