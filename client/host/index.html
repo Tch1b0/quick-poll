@@ -41,34 +41,25 @@
                     <div class="p3"></div>
                 </div>
             </div>
-            <div id="qrcode-2"></div>
+            <div id="post-start" class="join-help">
+                <!-- <pre id="weburl"></pre> -->
+                <pre>Beitreten mit Code: <span class="session-code" id="session-code-2"></span><br>oder<br>QR-Code scannen:</pre>
+                <div id="qrcode-2"></div>
+            </div>
             <div id="pre-start">
                 <div class="pre-start-container">
-                    <div>
-                        <pre id="weburl"></pre>
+                    <div class="join-help">
+                        <h3>
+                            Nutzer in Session:
+                            <span id="clientCount">0</span>
+                        </h3>
+                        <!-- <pre id="weburl"></pre> -->
+                        <pre>Beitreten mit Code: <span class="session-code" id="session-code"></span><br>oder<br>QR-Code scannen:</pre>
                         <div id="qrcode"></div>
                     </div>
                     <div class="poll-container">
-                        <div class="poll">
-                            <h3>
-                                Nutzer in Session:
-                                <span id="clientCount">0</span>
-                            </h3>
-                            <input
-                                type="text"
-                                id="pollTitle"
-                                placeholder="Titel"
-                            />
-                            <select name="Typ" id="pollType">
-                                <option value="select">Auswahl</option>
-                                <option value="input">Eingabe</option>
-                            </select>
-                            <input
-                                type="text"
-                                id="pollAnswers"
-                                placeholder="Antwort1, Antwort2, ..."
-                            />
-                        </div>
+                        <div id="poll" class="poll"></div>
+                        <button id="addButton">+</button>
                     </div>
                 </div>
                 <button id="btn">Starten</button>

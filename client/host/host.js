@@ -2,6 +2,7 @@ import { getURLParams } from "../lib/URLParams.js";
 import { newWSConnection } from "../lib/connection.js";
 import { $ } from "../lib/dom.js";
 import { ChartDisplay } from "./components/chartDisplay.js";
+import { QuizLayout } from "./components/quizLayout.js";
 
 // const params = getURLParams(window.location.href);
 // const sessionID = params.get("id");
@@ -23,7 +24,7 @@ function createQR(el) {
         text: joinURL,
         width: qrSize,
         height: qrSize,
-        colorDark: "snow",
+        colorDark: "yellow",
         colorLight: "#050612",
         correctLevel: QRCode.CorrectLevel.H,
     });
@@ -43,17 +44,25 @@ const UI = {
     startQuiz() {
         this.root.removeChild(this.preStartElements);
         createQR($("qrcode-2"));
+        $("session-code-2").innerText = sessionID;
+        $("post-start").style.display = "block";
     },
 };
 
 /** @type {ChartDisplay} */
 let chartDisplay = null;
+let quizLayout = new QuizLayout($("poll"));
 
 function onSessionCreated() {
     joinURL = `${window.location.origin}/participate#id=${sessionID}`;
-    $("weburl").innerText = joinURL;
+    if (false) $("weburl").innerText = joinURL;
+    $("session-code").innerText = sessionID;
 
     createQR($("qrcode"));
+    quizLayout.addQuestion();
+    $("addButton").addEventListener("click", () => {
+        quizLayout.addQuestion();
+    });
 }
 
 // connect to the server / create the session
@@ -113,35 +122,9 @@ ws.onclose = (_) => {
  * @returns {QuizData?}
  */
 function parseFormQuiz() {
-    let question, type, answers;
-    const logInvalidForm = () =>
-        console.info("invalid poll form, defaulting to example poll");
-
-    try {
-        question = $("pollTitle").value;
-        type = $("pollType").value;
-        answers = $("pollAnswers")
-            .value.split(",")
-            .map((v) => v.trim());
-    } catch {
-        logInvalidForm();
-        return null;
-    }
-
-    if (!question || !type || !answers) {
-        logInvalidForm();
-        return null;
-    }
-
     return {
         title: "Umfrage",
-        questions: [
-            {
-                question,
-                type,
-                answers,
-            },
-        ],
+        questions: quizLayout.toJSON(),
     };
 }
 

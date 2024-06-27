@@ -16,7 +16,7 @@ hostButton.addEventListener("click", () => {
 });
 
 joinButton.addEventListener("click", () => {
-    const val = sessionIDInput.value;
+    const val = prompt("Sitzungs-ID");
     if (!val) {
         console.error("No session ID provided");
         return;
