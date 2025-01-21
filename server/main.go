@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Tch1b0/quick-poll/internal/net"
+	"github.com/getsentry/sentry-go"
+	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
@@ -15,10 +18,13 @@ var upgrader = websocket.Upgrader{
 }
 
 func main() {
+	initSentry()
+
 	s := gin.Default()
 	sc := net.NewSessionCollection()
 
 	s.Use(CORSMiddleware())
+	s.Use(sentrygin.New(sentrygin.Options{}))
 
 	s.GET("/", func(c *gin.Context) {
 		c.String(200, "ok")
@@ -103,5 +109,18 @@ func CORSMiddleware() gin.HandlerFunc {
 		}
 
 		c.Next()
+	}
+}
+
+func initSentry() {
+	if err := sentry.Init(sentry.ClientOptions{
+		Dsn: "https://3688852d9c6785720a7b2012f072bec5@o4508681578741760.ingest.de.sentry.io/4508681704374352",
+		// Set TracesSampleRate to 1.0 to capture 100%
+		// of transactions for tracing.
+		// We recommend adjusting this value in production,
+		EnableTracing:    true,
+		TracesSampleRate: 1.0,
+	}); err != nil {
+		fmt.Printf("Sentry initialization failed: %v\n", err)
 	}
 }
