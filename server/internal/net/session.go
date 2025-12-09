@@ -2,6 +2,7 @@ package net
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/Tch1b0/quick-poll/internal/logging"
 	"github.com/Tch1b0/quick-poll/internal/quiz"
@@ -13,6 +14,8 @@ type Session struct {
 	Hosts       []*Host
 	Clients     []*Client
 	CurrentQuiz *quiz.Data
+
+	writeMutex sync.Mutex
 }
 
 func (s *Session) AddClient(c *Client) {
@@ -23,7 +26,7 @@ func (s *Session) AddClient(c *Client) {
 
 	// if quiz already started, send it to the new client
 	if s.CurrentQuiz != nil {
-		c.Ws.WriteJSON(Action{
+		s.Write(c.Ws, Action{
 			Type: "quiz",
 			Data: s.CurrentQuiz,
 		})
@@ -60,7 +63,7 @@ func (s *Session) ClientListenLoop(c *Client) {
 func (s *Session) AddHost(h *Host) {
 	s.Hosts = append(s.Hosts, h)
 
-	h.Ws.WriteJSON(Action{
+	s.Write(h.Ws, Action{
 		Type: "quiz",
 		Data: s.CurrentQuiz,
 	})
@@ -70,7 +73,7 @@ func (s *Session) AddHost(h *Host) {
 		allClientInfos = append(allClientInfos, c.Info())
 	}
 
-	h.Ws.WriteJSON(Action{
+	s.Write(h.Ws, Action{
 		Type: "info",
 		Data: allClientInfos,
 	})
@@ -97,20 +100,27 @@ func (s *Session) HostListenLoop(h *Host) {
 }
 
 func (s *Session) processAction(a Action) error {
-	if a.Type == "idle" {
-		s.StartIdle()
-		return nil
-	} else if a.Type == "quiz" {
-		quiz, err := quiz.DataFromPartialParsedData(a.Data)
-
-		if err != nil {
-			return err
+	switch a.Type {
+	case "idle":
+		{
+			s.StartIdle()
+			return nil
 		}
+	case "quiz":
+		{
+			quiz, err := quiz.DataFromPartialParsedData(a.Data)
 
-		s.StartQuiz(quiz)
-		return nil
-	} else if a.Type == "close" {
-		s.Active = false
+			if err != nil {
+				return err
+			}
+
+			s.StartQuiz(quiz)
+			return nil
+		}
+	case "close":
+		{
+			s.Active = false
+		}
 	}
 
 	return fmt.Errorf("invalid action type \"%s\"", a.Type)
@@ -134,9 +144,9 @@ func (s *Session) StartQuiz(quiz quiz.Data) {
 	s.sessionLog("quiz was started")
 }
 
-func (s Session) SendClients(v any) {
+func (s *Session) SendClients(v any) {
 	for _, c := range s.Clients {
-		err := c.Ws.WriteJSON(v)
+		err := s.Write(c.Ws, v)
 
 		// kick the client if the message fails, as the client is most likely not in the session anymore
 		if err != nil {
@@ -148,9 +158,9 @@ func (s Session) SendClients(v any) {
 	s.sessionLog("a message was sent to clients")
 }
 
-func (s Session) SendHosts(v any) {
+func (s *Session) SendHosts(v any) {
 	for _, h := range s.Hosts {
-		err := h.Ws.WriteJSON(v)
+		err := s.Write(h.Ws, v)
 
 		// kick the host if the message fails, as the host is most likely not in the session anymore
 		if err != nil {
@@ -162,7 +172,7 @@ func (s Session) SendHosts(v any) {
 	s.sessionLog("a message was sent to host")
 }
 
-func (s Session) SendAll(v any) {
+func (s *Session) SendAll(v any) {
 	s.SendClients(v)
 	s.SendHosts(v)
 
@@ -174,7 +184,7 @@ func (s Session) SendAll(v any) {
 	}
 }
 
-func (s Session) SendHostCurrentState() {
+func (s *Session) SendHostCurrentState() {
 	s.SendHosts(Action{
 		Type: "state",
 		Data: map[string]any{
@@ -229,8 +239,15 @@ func (s *Session) EndSession() {
 	s.sessionLog("session ended")
 }
 
-func (s Session) sessionLog(msg string) {
+func (s *Session) sessionLog(msg string) {
 	logging.GetLogger().Info(fmt.Sprintf("Session#%s", s.Id), msg)
+}
+
+func (s *Session) Write(ws WebSocket, v any) error {
+	s.writeMutex.Lock()
+	err := ws.WriteJSON(v)
+	s.writeMutex.Unlock()
+	return err
 }
 
 func NewSession(id string) *Session {
