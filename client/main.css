@@ -109,3 +109,12 @@ img.socials {
 img.socials:hover {
     filter: brightness(1);
 }
+
+pre.version-display {
+    filter: opacity(30%);
+    font-size: larger;
+    font-weight: bolder;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
